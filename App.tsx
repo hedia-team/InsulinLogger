@@ -1,21 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Token } from "src/types/types";
+import InsulinLog from "./src/screens/InsulinLog";
+import Login from "./src/screens/Login";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+interface IState {
+	token: Token;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default class App extends React.Component<{}, IState> {
+	public state: IState = {
+		token: null,
+	};
+
+	public updateToken = (token: IState["token"]) => {
+		this.setState({
+			token,
+		});
+	};
+
+	public render() {
+		const { token } = this.state;
+
+		if (token === null) {
+			return <Login updateToken={this.updateToken} />;
+		}
+
+		return <InsulinLog token={token} />;
+	}
+}
